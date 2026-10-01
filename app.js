@@ -70,10 +70,21 @@ function normalizeRecord(r){
   return {...r,strongPoint:r.strongPoint||r.strong_point,workPoint:r.workPoint||r.work_point,schoolYear:Number(r.schoolYear||r.school_year||1)};
 }
 
+const CUSTOM_OPTION = 'Iets anders (zelf invullen)';
+function isCustomValue(v=''){ return String(v).startsWith('Iets anders: '); }
+function customText(v=''){ return isCustomValue(v) ? String(v).slice('Iets anders: '.length) : ''; }
+function wordCount(v=''){ return String(v).trim() ? String(v).trim().split(/\s+/).length : 0; }
+function getTip(type, workPoint){ return DATA[type]?.work?.find(x=>x.label===workPoint)?.tip || ''; }
+
 function taskCard(type, year, rec, idx){
   const d=DATA[type];
-  const advice = d.work.find(x=>x.label===rec?.workPoint)?.tip || '';
-  return `<article class="task-card" data-id="${rec?.id||''}" data-type="${type}" data-year="${year}">
+  const storedStrong=rec?.strongPoint||'';
+  const storedWork=rec?.workPoint||'';
+  const strongCustom=isCustomValue(storedStrong), workCustom=isCustomValue(storedWork);
+  const strongSelected=strongCustom?CUSTOM_OPTION:storedStrong;
+  const workSelected=workCustom?CUSTOM_OPTION:storedWork;
+  const advice = getTip(type, storedWork);
+  return `<article class="task-card ${rec?.id?'saved-task':'empty-task'}" data-id="${rec?.id||''}" data-type="${type}" data-year="${year}">
     <div class="task-top">
       <div class="num">${idx+1}</div>
       <div class="field"><label>Titel van de taak</label><input class="title" placeholder="bv. Boekvoorstelling" value="${escapeHtml(rec?.title||'')}"></div>
@@ -81,12 +92,23 @@ function taskCard(type, year, rec, idx){
     </div>
     <div class="task-grid">
       <div class="choice-box good">
-        <h4>✓ Sterk punt</h4>
-        <div class="field"><select class="strong">${emptyOption('Kies een sterk punt…')}${optionList(d.strong,rec?.strongPoint||'')}</select></div>
+        <div class="choice-heading"><span class="choice-icon">✓</span><div><h4>Sterk punt</h4><small>Wat liep al goed?</small></div></div>
+        <div class="field"><select class="strong">${emptyOption('Kies een sterk punt…')}${optionList([...d.strong,CUSTOM_OPTION],strongSelected)}</select></div>
+        <div class="custom-entry custom-strong-wrap ${strongCustom?'':'hidden'}">
+          <label>Mijn eigen sterk punt</label>
+          <textarea class="custom-strong" rows="3" placeholder="Schrijf kort wat jij sterk vond aan deze taak.">${escapeHtml(customText(storedStrong))}</textarea>
+          <div class="word-counter"><span class="strong-count">${wordCount(customText(storedStrong))}</span>/50 woorden</div>
+        </div>
       </div>
       <div class="choice-box work">
-        <h4>↗ Werkpunt</h4>
-        <div class="field"><select class="work">${emptyOption('Kies een werkpunt…')}${optionList(d.work.map(x=>x.label),rec?.workPoint||'')}</select></div>
+        <div class="choice-heading"><span class="choice-icon">↗</span><div><h4>Werkpunt</h4><small>Waar wil je verder aan werken?</small></div></div>
+        <div class="field"><select class="work">${emptyOption('Kies een werkpunt…')}${optionList([...d.work.map(x=>x.label),CUSTOM_OPTION],workSelected)}</select></div>
+        <div class="custom-entry custom-work-wrap ${workCustom?'':'hidden'}">
+          <label>Mijn eigen werkpunt</label>
+          <textarea class="custom-work" rows="3" placeholder="Beschrijf kort waar je zelf nog aan wilt werken.">${escapeHtml(customText(storedWork))}</textarea>
+          <div class="word-counter"><span class="work-count">${wordCount(customText(storedWork))}</span>/50 woorden</div>
+          <div class="custom-note">Voor een eigen werkpunt verschijnt geen automatische tip.</div>
+        </div>
         <div class="task-tip ${advice?'':'hidden'}">
           <img src="assets/teacher-cartoon.png" alt="Cartoon van de leerkracht">
           <div class="bubble"><strong>Mijn tip voor jou</strong><div class="advice">${advice?escapeHtml(advice):''}</div></div>
@@ -142,17 +164,51 @@ function updateStats(mine){
 function wireTaskCards(){
   qsa('.task-card').forEach(card=>{
     const type=card.dataset.type, year=Number(card.dataset.year);
-    card.querySelector('.work').addEventListener('change',e=>{
+    const strongSel=card.querySelector('.strong'), workSel=card.querySelector('.work');
+    const strongWrap=card.querySelector('.custom-strong-wrap'), workWrap=card.querySelector('.custom-work-wrap');
+    const strongText=card.querySelector('.custom-strong'), workText=card.querySelector('.custom-work');
+
+    const updateCounter=(textarea, selector)=>{
+      const n=wordCount(textarea.value); const el=card.querySelector(selector); if(el) el.textContent=n;
+      textarea.classList.toggle('over-limit',n>50);
+      const counter=textarea.closest('.custom-entry')?.querySelector('.word-counter'); if(counter) counter.classList.toggle('over-limit',n>50);
+    };
+    strongText.addEventListener('input',()=>updateCounter(strongText,'.strong-count'));
+    workText.addEventListener('input',()=>updateCounter(workText,'.work-count'));
+
+    strongSel.addEventListener('change',e=>{
+      const custom=e.target.value===CUSTOM_OPTION;
+      strongWrap.classList.toggle('hidden',!custom);
+      if(custom) setTimeout(()=>strongText.focus(),20);
+    });
+    workSel.addEventListener('change',e=>{
+      const custom=e.target.value===CUSTOM_OPTION;
+      workWrap.classList.toggle('hidden',!custom);
       const found=DATA[type].work.find(x=>x.label===e.target.value);
       const tipWrap=card.querySelector('.task-tip'); const box=card.querySelector('.advice');
-      if(found){ box.textContent=found.tip; tipWrap.classList.remove('hidden'); }
+      if(found&&!custom){ box.textContent=found.tip; tipWrap.classList.remove('hidden'); }
       else{ box.textContent=''; tipWrap.classList.add('hidden'); }
+      if(custom) setTimeout(()=>workText.focus(),20);
     });
+
     card.querySelector('.save').onclick=async()=>{
       const p={name:qs('#studentName').value.trim(),className:qs('#studentClass').value.trim()};
       if(!p.name||!p.className){alert('Vul eerst je naam en klas in.');return;}
       setProfile(p);
-      const rec={id:card.dataset.id||uid(),profile_id:profileId(p.name,p.className),student_name:p.name,class_name:p.className,type,school_year:year,title:card.querySelector('.title').value.trim(),date:card.querySelector('.date').value,strong_point:card.querySelector('.strong').value,work_point:card.querySelector('.work').value,updated_at:new Date().toISOString()};
+      let strongPoint=strongSel.value, workPoint=workSel.value;
+      if(strongPoint===CUSTOM_OPTION){
+        const t=strongText.value.trim(), n=wordCount(t);
+        if(!t){alert('Vul je eigen sterke punt in.');return;}
+        if(n>50){alert('Je eigen sterke punt mag maximaal 50 woorden bevatten.');return;}
+        strongPoint=`Iets anders: ${t}`;
+      }
+      if(workPoint===CUSTOM_OPTION){
+        const t=workText.value.trim(), n=wordCount(t);
+        if(!t){alert('Vul je eigen werkpunt in.');return;}
+        if(n>50){alert('Je eigen werkpunt mag maximaal 50 woorden bevatten.');return;}
+        workPoint=`Iets anders: ${t}`;
+      }
+      const rec={id:card.dataset.id||uid(),profile_id:profileId(p.name,p.className),student_name:p.name,class_name:p.className,type,school_year:year,title:card.querySelector('.title').value.trim(),date:card.querySelector('.date').value,strong_point:strongPoint,work_point:workPoint,updated_at:new Date().toISOString()};
       rec.strongPoint=rec.strong_point; rec.workPoint=rec.work_point; rec.schoolYear=year;
       if(!rec.title||!rec.strong_point||!rec.work_point){alert('Vul de titel, een sterk punt en een werkpunt in.');return;}
       try{ await upsertRecord(rec); location.reload(); }
@@ -188,7 +244,7 @@ async function initTeacher(){
     const repeated=Object.entries(recurring).filter(([,n])=>n>1).sort((a,b)=>b[1]-a[1]);
     qs('#studentDetail').innerHTML=`<div class="section-head teacher-student-head"><div><h2>${escapeHtml(s.name)}</h2><p>${escapeHtml(s.className)} · ${items.length} getoonde taken</p></div></div>
       ${repeated.length?`<div class="notice"><strong>Terugkerende werkpunten:</strong> ${repeated.map(([x,n])=>`${escapeHtml(x)} (${n}×)`).join(' · ')}</div>`:''}
-      <div class="history">${items.length?items.map(r=>`<div class="history-item"><div class="history-title-row"><h4>${escapeHtml(r.title)}</h4><button class="danger-btn teacher-delete" data-delete-id="${escapeHtml(r.id)}" title="Deze taak wissen">Wissen</button></div><div class="history-meta"><span class="badge year">${r.schoolYear===2?'2de jaar':'1ste jaar'}</span><span class="badge">${r.type==='spreken'?'Spreken':'Schrijven'}</span><span class="badge">${escapeHtml(r.date||'')}</span></div><p><span class="badge good">Sterk</span> ${escapeHtml(r.strongPoint||'')}</p><p><span class="badge work">Werkpunt</span> ${escapeHtml(r.workPoint||'')}</p><p class="small"><strong>Tip:</strong> ${escapeHtml(DATA[r.type].work.find(x=>x.label===r.workPoint)?.tip||'')}</p></div>`).join(''):'<div class="small empty-state">Geen taken voor deze selectie.</div>'}</div>`;
+      <div class="history">${items.length?items.map(r=>`<div class="history-item"><div class="history-title-row"><h4>${escapeHtml(r.title)}</h4><button class="danger-btn teacher-delete" data-delete-id="${escapeHtml(r.id)}" title="Deze taak wissen">Wissen</button></div><div class="history-meta"><span class="badge year">${r.schoolYear===2?'2de jaar':'1ste jaar'}</span><span class="badge">${r.type==='spreken'?'Spreken':'Schrijven'}</span><span class="badge">${escapeHtml(r.date||'')}</span></div><p><span class="badge good">Sterk</span> ${escapeHtml(r.strongPoint||'')}</p><p><span class="badge work">Werkpunt</span> ${escapeHtml(r.workPoint||'')}</p>${getTip(r.type,r.workPoint)?`<p class="small"><strong>Tip:</strong> ${escapeHtml(getTip(r.type,r.workPoint))}</p>`:''}</div>`).join(''):'<div class="small empty-state">Geen taken voor deze selectie.</div>'}</div>`;
     qsa('.teacher-delete').forEach(btn=>btn.onclick=async()=>{
       if(!confirm('Deze taak volledig wissen? De titel, sterke punten en werkpunten worden verwijderd.')) return;
       try{ await deleteRecord(btn.dataset.deleteId); location.reload(); }
