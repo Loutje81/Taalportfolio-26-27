@@ -164,7 +164,7 @@ function updateStats(mine){
 function wireTaskCards(){
   qsa('.task-card').forEach(card=>{
     const type=card.dataset.type, year=Number(card.dataset.year);
-    const strongSel=card.querySelector('.strong'), workSel=card.querySelector('.work');
+    const strongSel=card.querySelector('select.strong'), workSel=card.querySelector('select.work');
     const strongWrap=card.querySelector('.custom-strong-wrap'), workWrap=card.querySelector('.custom-work-wrap');
     const strongText=card.querySelector('.custom-strong'), workText=card.querySelector('.custom-work');
 
