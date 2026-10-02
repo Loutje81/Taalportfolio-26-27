@@ -5,5 +5,6 @@ window.TAALPORTFOLIO_CONFIG = {
   supabaseAnonKey: "",
   schoolName: "Middenschool Brugge Centrum",
   teacherName: "Leerkracht Nederlands",
-  teacherPassword: "msbc1.11"
+  teacherPassword: "msbc1.11",
+  academicYears: ["2026-2027", "2027-2028", "2028-2029"]
 };
