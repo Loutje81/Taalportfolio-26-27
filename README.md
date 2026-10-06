@@ -39,3 +39,9 @@ De klaslijsten staan in `data.js` onder `window.PEER_CLASS_LISTS`.
 - De keuze blijft lokaal bewaard voor volgende opdrachten en volgende bezoeken in dezelfde browser.
 - Met **Andere leerling / gegevens wijzigen** kan een gedeeld toestel naar een ander leerlingprofiel wisselen.
 - De bewaarde leerlingidentiteit wordt ook gebruikt als afzender van peerfeedback.
+
+
+## Versie 14
+- Fout bij bewaren van eigen feedback opgelost.
+- Validatie van positief punt, werkpunt en opdracht afzonderlijk gemaakt.
+- Cache-busting toegevoegd zodat GitHub Pages de nieuwste JavaScript-versie laadt.
