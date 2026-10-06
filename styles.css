@@ -163,3 +163,6 @@ h1{letter-spacing:-.035em}
 .peer-summary{margin-top:16px;padding:14px 16px;border-radius:16px;background:#eef8fa;border:1px solid #cfe5e9;line-height:1.5}
 .peer-summary p{margin:6px 0 0}.peer-summary .peer-good{color:var(--good-ink)}.peer-summary .peer-work{color:var(--work-ink)}
 @media(max-width:720px){.peer-target-grid,.peer-feedback-grid{grid-template-columns:1fr}}
+
+/* Versie 11: leerlingprofiel eenmalig bewaren */
+.identity-actions{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}.identity select:disabled{background:#f3f8f9;color:var(--ink);opacity:1;cursor:not-allowed}.identity-actions .small{font-weight:750;color:var(--good-ink)}

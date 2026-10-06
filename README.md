@@ -32,3 +32,10 @@ De klaslijsten staan in `data.js` onder `window.PEER_CLASS_LISTS`.
 - Klaskeuze bovenaan staat nu rechtstreeks in index.html (1A, 1B, 1C), zodat deze niet afhankelijk is van JavaScript om zichtbaar te worden.
 - Cache-busting toegevoegd aan config.js, data.js en app.js zodat GitHub Pages/browsers na upload niet per ongeluk oude JavaScript blijven gebruiken.
 - Na klaskeuze wordt de namenlijst uit data.js geladen.
+
+
+## Versie 11
+- Leerlingen kiezen één keer schooljaar, klas en naam en klikken op **Mijn gegevens bewaren**.
+- De keuze blijft lokaal bewaard voor volgende opdrachten en volgende bezoeken in dezelfde browser.
+- Met **Andere leerling / gegevens wijzigen** kan een gedeeld toestel naar een ander leerlingprofiel wisselen.
+- De bewaarde leerlingidentiteit wordt ook gebruikt als afzender van peerfeedback.
