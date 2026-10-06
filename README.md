@@ -16,7 +16,13 @@
 De klaslijsten staan in `data.js` onder `window.PEER_CLASS_LISTS`.
 
 
-## Versie 8
+## Versie 9
 - Peerfeedback: klaskeuze is vereenvoudigd tot 1A, 1B of 1C.
 - 1A bevat leerlingen uit 1A1, 1A2 en 1A3; 1B uit 1B1 en 1B2; 1C uit 1C1 t.e.m. 1C4.
 - Na de klaskeuze verschijnt één samengevoegde namenlijst.
+
+
+## Versie 9 – leerling kiest zichzelf uit de klaslijst
+- Bovenaan kiest de leerling eerst 1A, 1B of 1C en daarna de eigen naam uit dezelfde officiële klaslijst als bij peerfeedback.
+- Daardoor gebruikt het portfolio exact dezelfde naam en klas als de peerfeedback en kan de feedback betrouwbaar aan de juiste leerling worden gekoppeld.
+- Let op: in Lokale demo-modus staat feedback alleen in de browser van het toestel waarop ze werd ingevoerd. Voor feedback tussen verschillende leerlingtoestellen moeten `supabaseUrl` en `supabaseAnonKey` in `config.js` ingevuld zijn en moet `supabase.sql` uitgevoerd zijn.
