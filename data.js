@@ -54,3 +54,96 @@ window.PORTFOLIO_DATA = {
     ]
   }
 };
+
+
+// Klaslijsten voor peerfeedback (schooljaar 2026-2027)
+window.PEER_CLASS_LISTS = {
+  "1A1": [
+    "Beernaert Lotte",
+    "Delbrassine Mina",
+    "Kerckhof Oscar",
+    "Rguigui Sofia",
+    "Savtsjenko Lina",
+    "Vanhaecke Luuna",
+    "Van Hulle Amber",
+    "Van Loock Marie"
+  ],
+  "1A2": [
+    "Amponsah Jeffrey",
+    "Bron Ribrencio",
+    "Decock Cyrille",
+    "Demaj Esmir",
+    "Kacar Muhammed",
+    "Llukaj Joni",
+    "Nekrasov Liev",
+    "Rama Martinez Raphaël",
+    "Renier Luca",
+    "Shihabi Maher"
+  ],
+  "1A3": [
+    "Abouamra Jana",
+    "De Waepenaere Nelles",
+    "Ferreira Tavares Lucia",
+    "Padatsang Kunga Tenzin",
+    "Radulescu Rares",
+    "Termote Efren"
+  ],
+  "1B1": [
+    "Bogaert Maz",
+    "Boutens Elias",
+    "Calonne Eugénie",
+    "Debevere Arne",
+    "Declercq Epke",
+    "Declercq Noéline",
+    "Feys Jasper",
+    "Gega Elektra",
+    "Ghysel Lore",
+    "Huyben Stien",
+    "Ipskamps Elias",
+    "Mvele Eba Alexis",
+    "Ryde Feline",
+    "Udaltsova Dominika",
+    "Vandenabeele Jasper",
+    "Verspille Maur",
+    "Vlaeminck Paula",
+    "Yousofzai Bibizahra"
+  ],
+  "1B2": [
+    "Berten Sienna",
+    "Denys Tristan",
+    "Devos Max",
+    "Kinds Siebe",
+    "Vandromme Obe",
+    "Vermeersch Liam"
+  ],
+  "1C1": [
+    "Decroos Maxine",
+    "Dendane Fatima",
+    "Goeminne Lara",
+    "Gryzlova Anastasiia",
+    "Huys Lucy",
+    "Laforce Ryan",
+    "Van Tieghem Marie",
+    "Vermeersch Jasper"
+  ],
+  "1C2": [
+    "Bon Jose",
+    "Bossuyt Thorben",
+    "Naeem Hashim",
+    "Rodriguez Heeren Maurice",
+    "Zhegrova Alvis"
+  ],
+  "1C3": [
+    "Al Doori Yazen",
+    "Deldarzadeh Rahman",
+    "Rahimi Yusuf"
+  ],
+  "1C4": [
+    "Chiyangwa Lliana",
+    "Devos Mila",
+    "Tsewang Phuhtsok Galtsen",
+    "Van der Heggen Anaïs",
+    "Vilet Kyrill",
+    "Ying Angela"
+  ]
+};

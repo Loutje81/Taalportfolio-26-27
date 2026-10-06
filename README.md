@@ -1,31 +1,16 @@
-# Mijn taalportfolio – versie 3
+# Mijn taalportfolio – versie 7
 
-## Nieuw in deze versie
-- Leerkrachtenknop op de leerlingenpagina.
-- Wachtwoord voor leerkrachten: `msbc1.11`.
-- Dezelfde login kan door beide leerkrachten gebruikt worden.
-- Vier aparte onderdelen: Spreken 1ste jaar, Schrijven 1ste jaar, Spreken 2de jaar, Schrijven 2de jaar.
-- Leerkrachten kunnen filteren op schooljaar en op spreken/schrijven.
-- De cartoon met tip blijft direct onder het werkpunt van elke taak staan.
+## Nieuw
+- Peerfeedback werkt met vaste spreekopdrachten 1 t/m 5.
+- Daarna kiest de leerling een klas (1A1–1C4) en een klasgenoot uit de aangeleverde klaslijst.
+- Daarna kiest de leerling precies één positief punt en één werkpunt.
+- De ontvanger ziet per spreekopdracht automatisch het meest gekozen positieve punt en werkpunt plus het aantal stemmen.
+- De eigen reflectie blijft apart: na mondelinge feedback van de leerkracht kiest de leerling zelf een positief punt en werkpunt.
+- Eén reviewer kan per leerling/opdracht één stem bewaren; opnieuw bewaren vervangt die stem.
 
-## Bestanden
-- `index.html` = leerlingenversie + leerkrachtenknop
-- `leraar.html` = afgeschermd leerkrachtenoverzicht
-- `config.js` = instellingen + leerkrachtenwachtwoord
-- `data.js` = sterke punten, werkpunten en tips
-- `styles.css` = lay-out
-- `app.js` = werking
-- `assets/teacher-cartoon.png` = cartoon bij tips
-- `supabase.sql` = tabel/migratie voor gedeelde opslag
+## Installatie
+1. Vervang de bestanden in GitHub door deze versie.
+2. Voer `supabase.sql` één keer uit in de Supabase SQL Editor.
+3. Vul in `config.js` je `supabaseUrl` en `supabaseAnonKey` in. Zonder die waarden werkt de site alleen lokaal in de browser en kunnen leerlingen elkaars peerfeedback niet zien.
 
-## GitHub Pages bijwerken
-Upload/vervang minstens: `index.html`, `leraar.html`, `app.js`, `styles.css`, `config.js` en `supabase.sql`. De map `assets` mag blijven staan als `teacher-cartoon.png` daar al correct in zit.
-
-## Als je Supabase gebruikt
-Voer de nieuwe `supabase.sql` één keer uit in de SQL Editor. Daardoor wordt de extra kolom `school_year` toegevoegd. Bestaande taken krijgen automatisch `1ste jaar`.
-
-## Belangrijk over het wachtwoord
-Omdat GitHub Pages een statische website is, is dit een eenvoudige toegangsdrempel in de browser en geen volwaardige serverbeveiliging. Het wachtwoord staat technisch in de websitecode. Voor echte afscherming van leerlinggegevens is authenticatie via een backend/Supabase Auth of schoollogin nodig.
-
-## Automatisch extra taakvak
-Elk van de vier onderdelen start met vijf taakvakken. Na vijf geregistreerde taken verschijnt automatisch een extra leeg vak.
+De klaslijsten staan in `data.js` onder `window.PEER_CLASS_LISTS`.
