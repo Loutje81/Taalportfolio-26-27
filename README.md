@@ -14,3 +14,9 @@
 3. Vul in `config.js` je `supabaseUrl` en `supabaseAnonKey` in. Zonder die waarden werkt de site alleen lokaal in de browser en kunnen leerlingen elkaars peerfeedback niet zien.
 
 De klaslijsten staan in `data.js` onder `window.PEER_CLASS_LISTS`.
+
+
+## Versie 8
+- Peerfeedback: klaskeuze is vereenvoudigd tot 1A, 1B of 1C.
+- 1A bevat leerlingen uit 1A1, 1A2 en 1A3; 1B uit 1B1 en 1B2; 1C uit 1C1 t.e.m. 1C4.
+- Na de klaskeuze verschijnt één samengevoegde namenlijst.
